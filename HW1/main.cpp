@@ -1,7 +1,4 @@
 #include "AlexNet.h"
-// #include "Pattern.h"
-#include "Monitor.h"
-#include "clockreset.h"
 
 using namespace std;
 

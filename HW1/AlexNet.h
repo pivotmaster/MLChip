@@ -18,7 +18,7 @@ typedef vector<float> WeightFCBias;
 
 SC_MODULE(AlexNet)
 {
-    // read information
+    // load data
     vector<string> ReadLabel(const string &file_name);
     Pic ReadPic(const string &file_name, int c, int h, int w);
     WeightFCBias ReadFCBiasWeight(const string file_path, int ch_out);
@@ -45,6 +45,7 @@ SC_MODULE(AlexNet)
     void printResult(FCTensor result, vector<string> label, vector<string> pic_name);
     FCTensor inference(Tensor & input_pic);
 
+    // process
     void process();
 
     vector<vector<vector<float>>> in_data;
