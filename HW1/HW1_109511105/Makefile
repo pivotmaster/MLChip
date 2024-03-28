@@ -12,7 +12,14 @@ C = *.cpp
 
 all:
 	g++ -I . -I  $(INC_DIR) -L . -L $(LIB_DIR) -o $(O) $(C) $(LIB) $(RPATH)
-	./run
-
+	./run dog.txt cat.txt
+compile:
+	g++ -I . -I  $(INC_DIR) -L . -L $(LIB_DIR) -o $(O) $(C) $(LIB) $(RPATH)
+runall:
+	./run dog.txt cat.txt
+cat:
+	./run cat.txt
+dog:
+	./run dog.txt
 clean:
 	rm -rf $(O)

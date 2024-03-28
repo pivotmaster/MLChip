@@ -2,69 +2,6 @@
 
 using namespace std;
 
-vector<string> AlexNet::ReadLabel(const string &file_name)
-{
-    vector<string> label;
-    ifstream file(file_name);
-    string line;
-
-    if (!file.is_open())
-    {
-        throw runtime_error("Unable to open file");
-    }
-
-    while (getline(file, line))
-    {
-        if (!line.empty())
-        {
-            label.push_back(line);
-        }
-    }
-
-    if (label.empty())
-    {
-        cerr << "No labels were read from the file." << endl;
-    }
-
-    return label;
-}
-
-Pic AlexNet::ReadPic(const string &file_name, int c, int h, int w)
-{
-    Pic pic(c, vector<vector<float>>(h, vector<float>(w)));
-    ifstream file(file_name);
-    string line;
-    float value;
-    int channel = 0, row = 0, col = 0;
-
-    if (!file.is_open())
-    {
-        throw runtime_error("Unable to open file");
-    }
-
-    while (file >> value)
-    {
-        pic[channel][row][col] = value;
-        col++;
-        if (col == w)
-        {
-            col = 0;
-            row++;
-            if (row == h)
-            {
-                row = 0;
-                channel++;
-                if (channel == c)
-                {
-                    break;
-                }
-            }
-        }
-    }
-    file.close();
-    return pic;
-}
-
 WeightConv AlexNet::ReadConvWeight(const string file_path, int kernel_x, int kernel_y, int ch_in, int ch_out)
 {
     WeightConv weight(ch_out, vector<vector<vector<float>>>(

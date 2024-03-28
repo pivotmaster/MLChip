@@ -50,10 +50,29 @@ SC_MODULE(AlexNet)
 
     vector<vector<vector<float>>> in_data;
     vector<vector<float>> out_data;
-    const int PIC_NUM = 2;
+    sc_vector<sc_vector<sc_vector<sc_vector<sc_in<float>>>>> input_data{"input_data", 2, [](char const *name, size_t idx) -> sc_vector<sc_vector<sc_vector<sc_in<float>>>> *
+                                                                        {
+                                                                            return new sc_vector<sc_vector<sc_vector<sc_in<float>>>>(name, 3, [](char const *name, size_t idx) -> sc_vector<sc_vector<sc_in<float>>> *
+                                                                                                                                     { return new sc_vector<sc_vector<sc_in<float>>>(name, 224, [](char const *name, size_t idx) -> sc_vector<sc_in<float>> *
+                                                                                                                                                                                     { return new sc_vector<sc_in<float>>(name, 224); }); });
+                                                                        }};
+    sc_vector<sc_vector<sc_out<float>>> output_data{"output_data", 2, [](char const *name, size_t idx) -> sc_vector<sc_out<float>> *
+                                                    { return new sc_vector<sc_out<float>>(name, 1000); }};
+    int PIC_NUM;
 
     SC_CTOR(AlexNet)
     {
-        SC_THREAD(process);
+        SC_METHOD(process);
+        for (int b = 0; b < input_data.size(); b++)
+            for (int i = 0; i < input_data[b].size(); i++)
+            {
+                for (int j = 0; j < input_data[b][i].size(); j++)
+                {
+                    for (int k = 0; k < input_data[b][i][j].size(); k++)
+                    {
+                        sensitive << input_data[b][i][j][k];
+                    }
+                }
+            }
     }
 };

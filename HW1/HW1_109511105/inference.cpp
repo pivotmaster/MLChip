@@ -2,48 +2,6 @@
 
 using namespace std;
 
-vector<float> AlexNet::softmax(const vector<float> &logits)
-{
-    vector<float> exp_values;
-    transform(logits.begin(), logits.end(), back_inserter(exp_values), [](float logit)
-              { return exp(logit); });
-
-    float sum = accumulate(exp_values.begin(), exp_values.end(), 0.0f);
-    vector<float> probabilities;
-    transform(exp_values.begin(), exp_values.end(), back_inserter(probabilities), [sum](float exp_value)
-              { return exp_value / sum; });
-
-    return probabilities;
-}
-
-void AlexNet::printResult(FCTensor result, vector<string> label, vector<string> pic_name)
-{
-    for (int i = 0; i < result.size(); i++)
-    {
-        cout << endl
-             << pic_name[i] << endl;
-        cout << "====================================================" << endl;
-        cout << " idx |      val |   possibility |  class name       " << endl;
-        vector<float> possibility = softmax(result[i]);
-        vector<tuple<int, float, float>> indexedPossibilityWithScore;
-        for (int j = 0; j < possibility.size(); j++)
-        {
-            indexedPossibilityWithScore.push_back(make_tuple(j, possibility[j], result[i][j]));
-        }
-        vector<tuple<int, float, float>> topTen(10);
-        partial_sort_copy(indexedPossibilityWithScore.begin(), indexedPossibilityWithScore.end(), topTen.begin(), topTen.end(),
-                          [](const tuple<int, float, float> &left, const tuple<int, float, float> &right)
-                          {
-                              return get<1>(left) > get<1>(right);
-                          });
-        for (auto &[index, val, originalScore] : topTen)
-        {
-            cout << " " << setw(3) << index << " |  " << setw(5) << fixed << setprecision(4) << originalScore << " |    " << setw(10) << setprecision(5) << val * 100 << " | "
-                 << label[index] << endl;
-        }
-    }
-}
-
 FCTensor AlexNet::inference(Tensor &input_pic)
 {
     WeightConv conv1_weight, conv2_weight, conv3_weight, conv4_weight, conv5_weight;
