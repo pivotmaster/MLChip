@@ -2,9 +2,9 @@
 
 using namespace std;
 
-FCTensor AlexNet::inference(Tensor &input_pic)
-{
-    WeightConv conv1_weight, conv2_weight, conv3_weight, conv4_weight, conv5_weight;
+FCTensor AlexNet::inference(Tensor &input_pic) {
+    WeightConv conv1_weight, conv2_weight, conv3_weight, conv4_weight,
+        conv5_weight;
     WeightConvBias conv1_bias, conv2_bias, conv3_bias, conv4_bias, conv5_bias;
     WeightFC fc6_weight, fc7_weight, fc8_weight;
     WeightFCBias fc6_bias, fc7_bias, fc8_bias;
